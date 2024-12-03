@@ -69,7 +69,7 @@ public class WebSecurityConfig {
         return httpSecurity
                 .cors(config -> config.configurationSource(request -> {
                     CorsConfiguration cf = new CorsConfiguration();
-                    cf.setAllowedOrigins(List.of("http://localhost:3000"));
+                    cf.setAllowedOrigins(List.of("*"));
                     cf.setAllowedMethods(List.of("*"));
                     cf.setAllowCredentials(true);//Thiết lập cho phép hoặc không cho phép gửi thông tin xác thực (credentials) như cookies, thông tin xác thực, và tokens trong các yêu cầu CORS
                     cf.setAllowedHeaders(List.of("*"));
