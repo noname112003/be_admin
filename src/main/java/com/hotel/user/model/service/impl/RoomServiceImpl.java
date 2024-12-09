@@ -3,6 +3,7 @@ package com.hotel.user.model.service.impl;
 import com.hotel.user.model.dto.reponse.RoomDTO;
 import com.hotel.user.model.dto.reponse.RoomResponse;
 import com.hotel.user.model.dto.request.RoomRequest;
+
 import com.hotel.user.model.entity.Hotel;
 import com.hotel.user.model.entity.Image_room;
 import com.hotel.user.model.entity.Room;
@@ -15,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -103,6 +104,13 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Page<Room> getRoomsByHotelIds(List<Long> hotelIds, Pageable pageable) {
         return roomRepository.findByHotelIdIn(hotelIds, pageable);
+    }
+
+    @Override
+    public List<RoomResponse> getRoomsByHotelId(Long hotelId) {
+        return roomRepository.findByHotelId(hotelId).stream()
+                .map(room -> new RoomResponse().convertToDTO(room))
+                .collect(Collectors.toList());
     }
 
 }

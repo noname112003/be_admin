@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface RoomRepository extends JpaRepository<Room, Long>, CrudRepositor
 
     @Query("SELECT r FROM Room r WHERE r.hotel.id IN :hotelIds")
     Page<Room> findByHotelIdIn(List<Long> hotelIds, Pageable pageable);
+
+    List<Room> findByHotelId(Long hotelId);
 }

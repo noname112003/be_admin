@@ -2,6 +2,7 @@ package com.hotel.user.model.service.impl;
 
 import com.hotel.user.model.dto.reponse.UserResponse;
 import com.hotel.user.model.dto.request.UserRequest;
+import com.hotel.user.model.dto.request.command.UpdateAdminCommand;
 import com.hotel.user.model.entity.Role;
 import com.hotel.user.model.entity.User;
 import com.hotel.user.model.exception.UserAlreadyExistsException;
@@ -22,9 +23,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -126,5 +129,17 @@ public class UserServiceImpl implements UserService {
             return userDetails.getUsername(); // Email hoặc username của người dùng
         }
         throw new IllegalStateException("No logged-in user found");
+    }
+
+    @Override
+    public void updateUser(UpdateAdminCommand command) {
+        // Kiểm tra xem customer có tồn tại không
+        if (userRepository.existsByEmail(command.getEmail())) {
+            // Nếu tồn tại, thực hiện cập nhật
+            userRepository.updateAdminByEmail(command.getName(), command.getPhoneNumber(),
+                    command.getEmail());
+        } else {
+            throw new UsernameNotFoundException("Customer with email does not exist.");
+        }
     }
 }

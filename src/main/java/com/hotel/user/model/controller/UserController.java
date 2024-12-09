@@ -1,16 +1,20 @@
 package com.hotel.user.model.controller;
 
-
+import com.hotel.user.model.dto.reponse.AdminInfo;
 import com.hotel.user.model.dto.reponse.HotelResponse;
+import com.hotel.user.model.dto.request.command.UpdateAdminCommand;
 import com.hotel.user.model.entity.User;
 import com.hotel.user.model.service.HotelService;
 import com.hotel.user.model.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,5 +35,23 @@ public class UserController {
         Page<HotelResponse> hotels = hotelService.getAllHotels_v2(user.getId(), keyword, pageable);
         return ResponseEntity.ok(hotels);
     }
+
+    @GetMapping("/profile/{email}")
+    public ResponseEntity<?> getProfile(@PathVariable("email") String email) {
+        User admin = userService.getUser(email);
+        return ResponseEntity.ok(AdminInfo.getAdminInfo(admin));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody @Valid UpdateAdminCommand command) {
+        // Gọi service để thực hiện cập nhật
+        try {
+            userService.updateUser(command);
+            return ResponseEntity.ok("Admin updated successfully");
+        } catch (UsernameNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
+    }
+
 
 }

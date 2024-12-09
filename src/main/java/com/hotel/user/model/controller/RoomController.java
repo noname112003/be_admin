@@ -1,6 +1,5 @@
 package com.hotel.user.model.controller;
 
-
 import com.hotel.user.model.dto.reponse.RoomResponse;
 import com.hotel.user.model.dto.request.RoomRequest;
 import com.hotel.user.model.exception.RoomNotFoundException;

@@ -6,6 +6,7 @@ import com.hotel.user.model.security.jwt.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -69,7 +70,7 @@ public class WebSecurityConfig {
         return httpSecurity
                 .cors(config -> config.configurationSource(request -> {
                     CorsConfiguration cf = new CorsConfiguration();
-                    cf.setAllowedOrigins(List.of("*"));
+                    cf.setAllowedOrigins(List.of("http://localhost:3000"));
                     cf.setAllowedMethods(List.of("*"));
                     cf.setAllowCredentials(true);//Thiết lập cho phép hoặc không cho phép gửi thông tin xác thực (credentials) như cookies, thông tin xác thực, và tokens trong các yêu cầu CORS
                     cf.setAllowedHeaders(List.of("*"));
@@ -94,6 +95,12 @@ public class WebSecurityConfig {
                                 .requestMatchers("/rooms/create/**")
                                 .authenticated()
                                 .requestMatchers("/rooms/update/**")
+                                .authenticated()
+                                .requestMatchers("/admin/profile/**")
+                                .authenticated()
+                                .requestMatchers("/api/admin/booking/**")
+                                .permitAll()
+                                .requestMatchers("/api/admin/booking/booked-rooms/**")
                                 .authenticated()
                                 .anyRequest().authenticated()
                 )

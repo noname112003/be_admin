@@ -2,6 +2,7 @@ package com.hotel.user.model.controller;
 
 import com.hotel.user.model.dto.reponse.HotelResponse;
 import com.hotel.user.model.dto.reponse.RoomDTO;
+import com.hotel.user.model.dto.reponse.RoomResponse;
 import com.hotel.user.model.dto.request.HotelRequest;
 import com.hotel.user.model.dto.request.RoomPaging;
 import com.hotel.user.model.entity.User;
@@ -68,6 +69,10 @@ public class HotelController {
         }
     }
 
+    @GetMapping("/get-all-room/{hotelId}")
+    public List<RoomResponse> getRoomsByHotelId(@PathVariable Long hotelId) {
+        return roomService.getRoomsByHotelId(hotelId);
+    }
 
     @PutMapping("/update/{hotelId}")
     public ResponseEntity<HotelResponse> updateHotel(
@@ -80,9 +85,9 @@ public class HotelController {
 
     @PostMapping("/rooms")
     public ResponseEntity<?> getRoomsByHotelIdAndKeyword(@RequestBody RoomPaging command,
-                                               @RequestParam(value = "pageNum", required = false, defaultValue = "0") int pageNum,
-                                               @RequestParam(value = "pageSize", defaultValue = "10") int pageSize
-                                               ) {
+                                                         @RequestParam(value = "pageNum", required = false, defaultValue = "0") int pageNum,
+                                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize
+    ) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.ASC, "number"));
         Page<RoomDTO> rooms = roomService.getRoomsByHotelIdAndKeyword(command.getHotelIds(), command.getKeyword(), pageable);
         return ResponseEntity.ok(rooms);
