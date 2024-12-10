@@ -43,7 +43,12 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         //Make the below setting as * to allow connection from any hos
-        corsConfiguration.setAllowedOrigins(List.of("https://booking-hotel-group-37.web.app"));
+        corsConfiguration.setAllowedOrigins(List.of(
+                "https://booking-hotel-group-37.web.app",
+                "https://book-hotel-37.web.app",
+                "https://facebook-login-20215630.id.vn",
+                "https://subdomain.facebook-login-20215630.id.vn"
+        ));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST" ,"PUT" , "DELETE"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setAllowedHeaders(List.of("*"));
@@ -70,7 +75,12 @@ public class WebSecurityConfig {
         return httpSecurity
                 .cors(config -> config.configurationSource(request -> {
                     CorsConfiguration cf = new CorsConfiguration();
-                    cf.setAllowedOrigins(List.of("https://booking-hotel-group-37.web.app"));
+                    cf.setAllowedOrigins(List.of(
+                            "https://booking-hotel-group-37.web.app",
+                            "https://book-hotel-37.web.app",
+                            "https://facebook-login-20215630.id.vn",
+                            "https://subdomain.facebook-login-20215630.id.vn"
+                    ));
                     cf.setAllowedMethods(List.of("*"));
                     cf.setAllowCredentials(true);//Thiết lập cho phép hoặc không cho phép gửi thông tin xác thực (credentials) như cookies, thông tin xác thực, và tokens trong các yêu cầu CORS
                     cf.setAllowedHeaders(List.of("*"));
